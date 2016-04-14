@@ -5,9 +5,10 @@
     var Lightbox = function(element, options) {
         this.lightbox = $(element);
         // Lightbox identifier
-        this.lightboxIdentifier = this.lightbox.attr("data-identifier");
+        this.lightboxIdentifier = this.lightbox.attr("data-lightbox-id");
         // Lightbox triggers
-        this.lightboxTriggers = $('button[data-identifier="' + this.lightboxIdentifier + '"]');
+        this.lightboxOpenTriggers = $('button[data-open-lightbox="' + this.lightboxIdentifier + '"]');
+        this.lightboxCloseTriggers = $('button[data-close-lightbox="' + this.lightboxIdentifier + '"]');
         // Clicked lightbox trigger
         this.clickedLighboxTrigger = "";
 
@@ -41,13 +42,11 @@
         // Binding events
         bindEvents: function() {
             // On triggers click open or close lightbox
-            this.lightboxTriggers.on('click', $.proxy(function(e) {
-                // If lightbox is opened or not
-                if (this.lightbox.hasClass(this.classes.active)) {
-                    this.closeLightbox($(e.currentTarget));
-                } else {
-                    this.openLightbox($(e.currentTarget));
-                }
+            this.lightboxOpenTriggers.on('click', $.proxy(function(e) {
+                this.openLightbox($(e.currentTarget));
+            }, this));
+            this.lightboxCloseTriggers.on('click', $.proxy(function(e) {
+                this.closeLightbox($(e.currentTarget));
             }, this));
             // On shadow click close lightbox
             this.lightboxShadow.on('click', $.proxy(function(e) {
@@ -61,11 +60,10 @@
             this.lightbox.attr("tabindex", -1);
             setTimeout($.proxy(function() {
                 this.lightbox.focus();
-                console.log(document.activeElement);
             }, this), 0);
 
             // Add the first clicked button into a variable to use later
-            if (this.clickedLighboxTrigger == "") {
+            if (this.clickedLighboxTrigger === "") {
                 this.clickedLighboxTrigger = currentTrigger;
             }
             // Open the lightbox
@@ -74,10 +72,10 @@
         },
 
         closeLightbox: function(currentTrigger) {
-            this.lightbox.removeClass(this.classes.active);
-            this.lightboxTriggers.removeClass(this.classes.active);
-            this.removeGuards();
             this.clickedLighboxTrigger.focus();
+            this.lightbox.removeClass(this.classes.active);
+            this.lightboxOpenTriggers.removeClass(this.classes.active);
+            this.removeGuards();
         },
 
         // Create guards
