@@ -77,6 +77,7 @@
             this.lightbox.removeClass(this.classes.active);
             this.lightboxTriggers.removeClass(this.classes.active);
             this.removeGuards();
+            this.clickedLighboxTrigger.focus();
         },
 
         // Create guards
@@ -88,7 +89,6 @@
             // On guards focus close lightbox and focus on triggered button
             this.lightboxGuards.on('focus', $.proxy(function(e) {
                 this.closeLightbox($(e.currentTarget));
-                this.clickedLighboxTrigger.focus();
             }, this));
         },
 
