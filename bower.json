@@ -1,0 +1,18 @@
+{
+  "name": "vtt-jquery-lightbox",
+  "version": "0.0.0",
+  "homepage": "",
+  "authors": [
+    "libeo <info@libeo.com>"
+  ],
+  "description": "A11y friendly lightbox",
+  "main": "dist/jquery.lightbox.js",
+  "private": true,
+  "ignore": [
+    "node_modules"
+  ],
+  "dependencies": {
+    "jquery": "^2.2.2"
+  },
+  "keywords": "lightbox, jquery, a11y"
+}
