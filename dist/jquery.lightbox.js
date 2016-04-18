@@ -4,15 +4,9 @@
 (function($) {
     var Lightbox = function(element, options) {
         this.lightbox = $(element);
-        // Lightbox identifier
-        this.lightboxIdentifier = this.lightbox.attr("data-lightbox-id");
-        // Lightbox triggers
-        this.lightboxOpenTriggers = $('button[data-open-lightbox="' + this.lightboxIdentifier + '"]');
-        this.lightboxCloseTriggers = $('button[data-close-lightbox="' + this.lightboxIdentifier + '"]');
-        // Clicked lightbox trigger
-        this.clickedLighboxTrigger = "";
 
         this.config = $.extend({
+            keepFocusInside: true,
             customGlobalClasses: {}
         }, options || {});
 
@@ -22,8 +16,16 @@
             hover: 'is-hover',
             clicked: 'is-clicked',
             extern: 'is-external',
-            error: 'is-error'
+            error: 'is-error',
+            visuallyhidden: 'is-visuallyhidden',
+            next: 'is-next',
+            prev: 'is-prev'
         }, (window.classes !== undefined ? window.classes : this.config.customGlobalClasses) || {});
+
+        this.lightboxIdentifier = this.lightbox.attr('data-lightbox-id');
+        this.lightboxOpenTriggers = $('button[data-open-lightbox="' + this.lightboxIdentifier + '"]');
+        this.lightboxCloseTriggers = $('button[data-close-lightbox="' + this.lightboxIdentifier + '"]');
+        this.clickedLightboxTrigger = '';
 
         this.init();
     };
@@ -34,63 +36,77 @@
         init: function() {
             // Add the background shadow to the lightbox
             this.lightbox.append('<div class="lightbox-shadow ' + this.classes.active + '"></div>');
-            this.lightboxShadow = this.lightbox.find(".lightbox-shadow");
-            // Bind events
+            this.lightboxShadow = this.lightbox.find('.lightbox-shadow');
+
             this.bindEvents();
         },
 
-        // Binding events
         bindEvents: function() {
-            // On triggers click open or close lightbox
             this.lightboxOpenTriggers.on('click', $.proxy(function(e) {
                 this.openLightbox($(e.currentTarget));
             }, this));
+
             this.lightboxCloseTriggers.on('click', $.proxy(function(e) {
-                this.closeLightbox($(e.currentTarget));
+                this.closeLightbox();
             }, this));
-            // On shadow click close lightbox
+
             this.lightboxShadow.on('click', $.proxy(function(e) {
-                this.closeLightbox($(e.currentTarget));
+                this.closeLightbox();
+            }, this));
+
+            $(document).keyup($.proxy(function(e) {
+                if (e.keyCode === 27) this.closeLightbox();
             }, this));
         },
 
         openLightbox: function(currentTrigger) {
-            // Add focus to the lightbox and create guards
             this.createGuards();
-            this.lightbox.attr("tabindex", -1);
+            this.lightbox.attr('tabindex', -1);
             setTimeout($.proxy(function() {
                 this.lightbox.focus();
             }, this), 0);
 
-            // Add the first clicked button into a variable to use later
-            if (this.clickedLighboxTrigger === "") {
-                this.clickedLighboxTrigger = currentTrigger;
+            // Save a reference to the lightbox open trigger button
+            if (this.clickedLightboxTrigger === '') {
+                this.clickedLightboxTrigger = currentTrigger;
             }
-            // Open the lightbox
+
             currentTrigger.addClass(this.classes.active);
             this.lightbox.addClass(this.classes.active);
         },
 
-        closeLightbox: function(currentTrigger) {
-            this.clickedLighboxTrigger.focus();
+        closeLightbox: function() {
             this.lightbox.removeClass(this.classes.active);
             this.lightboxOpenTriggers.removeClass(this.classes.active);
             this.removeGuards();
+
+            this.clickedLightboxTrigger.focus();
         },
 
-        // Create guards
         createGuards: function() {
-            // Append guard buttons
-            this.lightbox.before('<button class="lightbox-guard visuallyhidden is-prev"></button>');
-            this.lightbox.after('<button class="lightbox-guard visuallyhidden is-next"></button>');
-            this.lightboxGuards = $(".lightbox-guard");
-            // On guards focus close lightbox and focus on triggered button
+            this.lightbox.before('<button class="lightbox-guard ' + this.classes.visuallyhidden + ' ' + this.classes.prev + '"></button>');
+            this.lightbox.after('<button class="lightbox-guard ' + this.classes.visuallyhidden + ' ' + this.classes.next + '"></button>');
+            this.lightboxGuards = $('.lightbox-guard');
+
             this.lightboxGuards.on('focus', $.proxy(function(e) {
-                this.closeLightbox($(e.currentTarget));
+                this.onGuardFocus(e);
             }, this));
         },
 
-        // Delete guards
+        onGuardFocus: function(e) {
+            var $guard = $(e.currentTarget);
+
+            if (this.config.keepFocusInside) {
+                if ($guard.hasClass(this.classes.prev)) {
+                    this.lightbox.find(':focusable').last().focus();
+                } else {
+                    this.lightbox.find(':focusable').first().focus();
+                }
+            } else {
+                this.closeLightbox();
+            }
+        },
+
         removeGuards: function() {
             this.lightboxGuards.remove();
         }
