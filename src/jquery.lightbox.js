@@ -53,6 +53,10 @@
             this.lightboxShadow.on('click', $.proxy(function(e) {
                 this.closeLightbox();
             }, this));
+
+            $(document).keyup($.proxy(function(e) {
+                if (e.keyCode === 27) this.closeLightbox();
+            }, this));
         },
 
         openLightbox: function(currentTrigger) {
