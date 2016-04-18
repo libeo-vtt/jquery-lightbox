@@ -12,7 +12,8 @@
     "node_modules"
   ],
   "dependencies": {
-    "jquery": "^2.2.2"
+    "jquery": "^2.2.2",
+    "vtt-jquery-focusable": "https://github.com/libeo-vtt/jquery-focusable.git#~1.0.0"
   },
   "keywords": "lightbox, jquery, a11y"
 }
