@@ -5,22 +5,27 @@
     var Lightbox = function(element, options) {
         this.lightbox = $(element);
 
-        this.config = $.extend({
+        // Default module configuration
+        this.defaults = {
             keepFocusInside: true,
-            customGlobalClasses: {}
-        }, options || {});
+            classes: {
+                next: 'next',
+                prev: 'prev',
+                visuallyhidden: 'visuallyhidden',
+                states: {
+                    active: 'is-active'
+                }
+            }
+        };
 
-        this.classes = $.extend({
-            active: 'is-active',
-            open: 'is-open',
-            hover: 'is-hover',
-            clicked: 'is-clicked',
-            extern: 'is-external',
-            error: 'is-error',
-            visuallyhidden: 'is-visuallyhidden',
-            next: 'is-next',
-            prev: 'is-prev'
-        }, (window.classes !== undefined ? window.classes : this.config.customGlobalClasses) || {});
+        // Merge default classes with window.project.classes
+        this.classes = $.extend(true, this.defaults.classes, (window.project ? window.project.classes : {}));
+
+        // Merge default labels with window.project.labels
+        this.labels = $.extend(true, this.defaults.labels, (window.project ? window.project.labels : {}));
+
+        // Merge default config with custom config
+        this.config = $.extend(true, this.defaults, options || {});
 
         this.lightboxIdentifier = this.lightbox.attr('data-lightbox-id');
         this.lightboxOpenTriggers = $('button[data-open-lightbox="' + this.lightboxIdentifier + '"]');
@@ -35,7 +40,7 @@
         // Component initialization
         init: function() {
             // Add the background shadow to the lightbox
-            this.lightbox.append('<div class="lightbox-shadow ' + this.classes.active + '"></div>');
+            this.lightbox.append('<div class="lightbox-shadow ' + this.classes.states.active + '"></div>');
             this.lightboxShadow = this.lightbox.find('.lightbox-shadow');
 
             this.bindEvents();
@@ -71,13 +76,13 @@
                 this.clickedLightboxTrigger = currentTrigger;
             }
 
-            currentTrigger.addClass(this.classes.active);
-            this.lightbox.addClass(this.classes.active);
+            currentTrigger.addClass(this.classes.states.active);
+            this.lightbox.addClass(this.classes.states.active);
         },
 
         closeLightbox: function() {
-            this.lightbox.removeClass(this.classes.active);
-            this.lightboxOpenTriggers.removeClass(this.classes.active);
+            this.lightbox.removeClass(this.classes.states.active);
+            this.lightboxOpenTriggers.removeClass(this.classes.states.active);
             this.removeGuards();
 
             this.clickedLightboxTrigger.focus();
