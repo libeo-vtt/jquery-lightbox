@@ -1,5 +1,5 @@
-# VTT jQuery Lightbox Plugin
-A11y friendly lightbox
+# jQuery Lightbox Plugin
+Accessible, responsive and configurable jQuery lightbox plugin
 
 ## Usage
 
@@ -19,7 +19,7 @@ A11y friendly lightbox
 3. Call the plugin:
 
 	```javascript
-	$("#element").lightbox({
+	$('#element').lightbox({
 		// config
 	});
 	```
