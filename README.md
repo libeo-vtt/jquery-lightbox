@@ -3,7 +3,7 @@ A11y friendly lightbox
 
 ## Usage
 
-1. Include jQuery:
+1. Include jQuery and dependencies:
 
 	```html
 	<script src="path/to/jquery.min.js"></script>
