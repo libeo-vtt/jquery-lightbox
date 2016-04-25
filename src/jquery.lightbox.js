@@ -1,5 +1,5 @@
 // Lightbox jQuery Plugin
-// A11y friendly lightbox
+// Accessible, responsive and configurable jQuery lightbox plugin
 
 (function($) {
     var Lightbox = function(element, options) {
@@ -47,11 +47,11 @@
         },
 
         bindEvents: function() {
-            this.lightboxOpenTriggers.on('click', $.proxy(function(e) {
+            $(document).on('click', '[data-open-lightbox="' + this.lightboxIdentifier + '"]', $.proxy(function(e) {
                 this.openLightbox($(e.currentTarget));
             }, this));
 
-            this.lightboxCloseTriggers.on('click', $.proxy(function(e) {
+            $(document).on('click', '[data-close-lightbox="' + this.lightboxIdentifier + '"]', $.proxy(function(e) {
                 this.closeLightbox();
             }, this));
 
@@ -72,9 +72,7 @@
             }, this), 0);
 
             // Save a reference to the lightbox open trigger button
-            if (this.clickedLightboxTrigger === '') {
-                this.clickedLightboxTrigger = currentTrigger;
-            }
+            this.clickedLightboxTrigger = currentTrigger;
 
             currentTrigger.addClass(this.classes.states.active);
             this.lightbox.addClass(this.classes.states.active);
