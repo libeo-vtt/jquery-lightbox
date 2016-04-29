@@ -98,12 +98,13 @@
 
         onGuardFocus: function(e) {
             var $guard = $(e.currentTarget);
+            var focusableElements = 'a, button, :input, [tabindex]';
 
             if (this.config.keepFocusInside) {
                 if ($guard.hasClass(this.classes.prev)) {
-                    this.lightbox.find(':focusable').last().focus();
+                    this.lightbox.find(focusableElements).last().focus();
                 } else {
-                    this.lightbox.find(':focusable').first().focus();
+                    this.lightbox.find(focusableElements).first().focus();
                 }
             } else {
                 this.closeLightbox();
