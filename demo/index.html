@@ -15,9 +15,6 @@
             width: 100%;
             height: 100%;
         }
-        .lightbox.is-active{
-            display: block;
-        }
         .lightbox-wrapper {
             z-index: 1;
             position: relative;
@@ -42,26 +39,31 @@
             height: 100%;
             background-color: rgba(0,0,0,0.6);
         }
-        .is-visuallyhidden {
-            position: absolute;
-            overflow: hidden;
-            clip: rect(0 0 0 0);
-            width: 1px;
-            height: 1px;
-            margin: -1px;
-            padding: 0;
-            border: 0;
-        }
     </style>
 </head>
 <body>
     <h1>Lightbox demo</h1>
-    <button data-open-lightbox="lightbox-dashboard">Ouvrir la lightbox</button>
-
-    <div data-lightbox-id="lightbox-dashboard" class="lightbox">
+    <button data-open-lightbox="lightbox-dashboard1">Ouvrir la lightbox</button>
+    <div data-lightbox-id="lightbox-dashboard1" class="lightbox" data-gallery="gallery1">
         <div class="lightbox-wrapper">
-            <p>Occaecat in cillum eu ad anim quis aute <a href="#">consectetur sunt</a> minim sunt aliquip qui proident ullamco laborum irure cillum eu aute velit ullamco non tempor enim minim ut est elit ipsum ut veniam nisi et excepteur do nisi magna qui laboris non proident dolor dolor id duis sunt in anim commodo nostrud ea occaecat excepteur dolore dolor labore aute proident duis eiusmod enim nulla aute ea ipsum ex ad tempor adipisicing nisi officia non Lorem ad qui laborum fugiat est officia nisi eiusmod et consectetur ad elit sint tempor velit labore ex fugiat eiusmod consectetur commodo anim.</p>
-            <button data-close-lightbox="lightbox-dashboard">Fermer la lightbox</button>
+            <p>Lightbox1</p>
+            <button data-close-lightbox="lightbox-dashboard1">Fermer la lightbox</button>
+        </div>
+    </div>
+
+    <button data-open-lightbox="lightbox-dashboard2">Ouvrir la lightbox</button>
+    <div data-lightbox-id="lightbox-dashboard2" class="lightbox" data-gallery="gallery1">
+        <div class="lightbox-wrapper">
+            <p>Lightbox2</p>
+            <button data-close-lightbox="lightbox-dashboard2">Fermer la lightbox</button>
+        </div>
+    </div>
+
+    <button data-open-lightbox="lightbox-dashboard3">Ouvrir la lightbox</button>
+    <div data-lightbox-id="lightbox-dashboard3" class="lightbox" data-gallery="gallery1">
+        <div class="lightbox-wrapper">
+            <p>Lightbox3</p>
+            <button data-close-lightbox="lightbox-dashboard3">Fermer la lightbox</button>
         </div>
     </div>
 
@@ -70,7 +72,12 @@
     <script type="text/javascript" src="../dist/jquery.lightbox.js"></script>
 
     <script>
-        $('.lightbox').lightbox();
+        var lightbox = $('.lightbox').lightbox({
+            keepFocusInside: true,
+            createGallery: true,
+            loop: true,
+            galleryIdentifier: "gallery1"
+        });
     </script>
 </body>
 </html>
