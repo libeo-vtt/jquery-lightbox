@@ -91,6 +91,7 @@
 
         },
 
+        // Add previous and next buttons to the lightbox wrapper
         createNavigation: function() {
             this.lightboxWrapper.append('<button class="' + this.classes.visuallyhidden + ' ' + this.classes.navigationPrev + '">Prev</button>');
             this.lightboxWrapper.append('<button class="' + this.classes.visuallyhidden + ' ' + this.classes.navigationNext + '">Next</button>');
@@ -111,6 +112,7 @@
             this.bindNavigation();
         },
 
+        // Bind navigation events on previous and next buttons
         bindNavigation: function() {
             this.navigationPrev.on('click', $.proxy(function(e) {
                 var index;
@@ -155,7 +157,7 @@
             }, this));
         },
 
-        // Change lightbox on navigation click
+        // Change of lightbox on navigation click
         changeLightbox: function(lightboxToOpen) {
             this.closeLightbox();
             lightboxToOpenElement = lightboxToOpen.data("lightbox");
@@ -170,6 +172,7 @@
             }, this), 0);
 
             this.lightbox.addClass(this.classes.states.active);
+
             if (this.config.animation == "fade") {
                 this.lightbox.fadeIn(this.config.animationTime);
             } else {
@@ -179,6 +182,7 @@
 
         closeLightbox: function() {
             this.lightbox.removeClass(this.classes.states.active);
+
             if (this.config.animation == "fade") {
                 this.lightbox.fadeOut(this.config.animationTime);
             } else {

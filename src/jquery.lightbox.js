@@ -9,7 +9,6 @@
         this.defaults = {
             keepFocusInside: true,
             createGallery: false,
-            galleryIdentifier: null,
             loop: false,
             animation: "fade",
             animationTime: 250,
@@ -49,7 +48,8 @@
 
         // Create a gallery of lightbox if config set to true
         if (this.config.createGallery == true) {
-            this.galleryElements = $('[data-gallery="' + this.config.galleryIdentifier + '"]');
+            this.galleryIdentifier = this.lightbox.attr('data-gallery');
+            this.galleryElements = $('[data-gallery="' + this.galleryIdentifier + '"]');
             // If there's actually more than one lightbox with the data-gallery
             if (this.galleryElements.length > 1) {
                 this.currentElementIndex = this.galleryElements.index(this.lightbox);
