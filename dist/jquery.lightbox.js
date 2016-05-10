@@ -93,8 +93,8 @@
 
         // Add previous and next buttons to the lightbox wrapper
         createNavigation: function() {
-            this.lightboxWrapper.append('<button class="' + this.classes.visuallyhidden + ' ' + this.classes.navigationPrev + '">Prev</button>');
-            this.lightboxWrapper.append('<button class="' + this.classes.visuallyhidden + ' ' + this.classes.navigationNext + '">Next</button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.navigationPrev + '">Prev</button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.navigationNext + '">Next</button>');
 
             // Get previous and next buttons
             this.navigationPrev = this.lightboxWrapper.find('.' + this.classes.navigationPrev);
