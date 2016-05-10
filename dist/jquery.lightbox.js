@@ -12,6 +12,7 @@
             loop: false,
             animation: "fade",
             animationTime: 250,
+            desactivateBodyScroll: true,
             labels: {
                 navigationPrev: 'Précédent',
                 navigationNext: 'Suivant',
@@ -40,7 +41,7 @@
 
         this.publicMethods = {
             open: $.proxy(function() {
-                this.openLightbox("change");
+                this.openLightbox('change');
             }, this)
         }
 
@@ -90,7 +91,7 @@
             }, this));
 
             $(document).keyup($.proxy(function(e) {
-                if (e.keyCode === 27) this.closeLightbox("close");
+                if (e.keyCode === 27) this.closeLightbox('close');
             }, this));
 
         },
@@ -163,9 +164,9 @@
 
         // Change of lightbox on navigation click
         changeLightbox: function(lightboxToOpen) {
-            this.closeLightbox("change");
-            lightboxToOpenElement = lightboxToOpen.data("lightbox");
-            lightboxToOpenElement.publicMethods.open("change");
+            this.closeLightbox('change');
+            lightboxToOpenElement = lightboxToOpen.data('lightbox');
+            lightboxToOpenElement.publicMethods.open('change');
         },
 
         /*
@@ -181,20 +182,25 @@
             this.lightbox.addClass(this.classes.states.active);
 
             // If switching between lightbox, don't fadeIn the background
-            if (state == "new") {
-                if (this.config.animation == "fade") {
+            if (state == 'new') {
+                if (this.config.animation == 'fade') {
                     this.lightbox.fadeIn(this.config.animationTime);
                 } else {
                     this.lightbox.show();
                 }
             } else {
-                if (this.config.animation == "fade") {
+                if (this.config.animation == 'fade') {
                     this.lightboxWrapper.hide();
                     this.lightbox.show();
                     this.lightboxWrapper.fadeIn(this.config.animationTime);
                 } else {
                     this.lightbox.show();
                 }
+            }
+
+            // Desactivate body scroll if config is set to true
+            if(this.config.desactivateBodyScroll == true) {
+                $('body').css('overflow','hidden');
             }
         },
         /*
@@ -204,14 +210,19 @@
             this.lightbox.removeClass(this.classes.states.active);
 
             // If switching between lightbox, don't fadeout the background
-            if (state == "close") {
-                if (this.config.animation == "fade") {
+            if (state == 'close') {
+                if (this.config.animation == 'fade') {
                     this.lightbox.fadeOut(this.config.animationTime);
                 } else {
                     this.lightbox.hide();
                 }
             } else {
                 this.lightbox.hide();
+            }
+
+            // Reactivate body scroll if config is set to true
+            if(this.config.desactivateBodyScroll == true) {
+                $('body').css('overflow','auto');
             }
 
             this.removeGuards();
@@ -241,7 +252,7 @@
                     this.lightbox.find(focusableElements).first().focus();
                 }
             } else {
-                this.closeLightbox("close");
+                this.closeLightbox('close');
             }
         },
 
