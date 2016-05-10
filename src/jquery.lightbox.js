@@ -12,11 +12,15 @@
             loop: false,
             animation: "fade",
             animationTime: 250,
+            labels: {
+                navigationPrev: 'Précédent',
+                navigationNext: 'Suivant',
+            },
             classes: {
-                next: 'next',
                 prev: 'prev',
-                navigationPrev: "navPrev",
-                navigationNext: "navNext",
+                next: 'next',
+                navigationPrev: "lightbox-prev-button",
+                navigationNext: "lightbox-next-button",
                 visuallyhidden: 'visuallyhidden',
                 states: {
                     active: 'is-active',
@@ -36,7 +40,7 @@
 
         this.publicMethods = {
             open: $.proxy(function() {
-                this.openLightbox();
+                this.openLightbox("change");
             }, this)
         }
 
@@ -74,27 +78,27 @@
 
         bindEvents: function() {
             $(document).on('click', '[data-open-lightbox="' + this.lightboxIdentifier + '"]', $.proxy(function(e) {
-                this.openLightbox(this.lightbox);
+                this.openLightbox("new");
             }, this));
 
             $(document).on('click', '[data-close-lightbox="' + this.lightboxIdentifier + '"]', $.proxy(function(e) {
-                this.closeLightbox();
+                this.closeLightbox("close");
             }, this));
 
             this.lightboxShadow.on('click', $.proxy(function(e) {
-                this.closeLightbox();
+                this.closeLightbox("close");
             }, this));
 
             $(document).keyup($.proxy(function(e) {
-                if (e.keyCode === 27) this.closeLightbox();
+                if (e.keyCode === 27) this.closeLightbox("close");
             }, this));
 
         },
 
         // Add previous and next buttons to the lightbox wrapper
         createNavigation: function() {
-            this.lightboxWrapper.append('<button class="' + this.classes.navigationPrev + '">Prev</button>');
-            this.lightboxWrapper.append('<button class="' + this.classes.navigationNext + '">Next</button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.navigationPrev + '">' + this.config.labels.navigationPrev + '</button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.navigationNext + '">' + this.config.labels.navigationNext + '</button>');
 
             // Get previous and next buttons
             this.navigationPrev = this.lightboxWrapper.find('.' + this.classes.navigationPrev);
@@ -159,12 +163,15 @@
 
         // Change of lightbox on navigation click
         changeLightbox: function(lightboxToOpen) {
-            this.closeLightbox();
+            this.closeLightbox("change");
             lightboxToOpenElement = lightboxToOpen.data("lightbox");
-            lightboxToOpenElement.publicMethods.open();
+            lightboxToOpenElement.publicMethods.open("change");
         },
 
-        openLightbox: function() {
+        /*
+        State == "new" or "change"
+         */
+        openLightbox: function(state) {
             this.createGuards();
             this.lightbox.attr('tabindex', -1);
             setTimeout($.proxy(function() {
@@ -173,18 +180,36 @@
 
             this.lightbox.addClass(this.classes.states.active);
 
-            if (this.config.animation == "fade") {
-                this.lightbox.fadeIn(this.config.animationTime);
+            // If switching between lightbox, don't fadeIn the background
+            if (state == "new") {
+                if (this.config.animation == "fade") {
+                    this.lightbox.fadeIn(this.config.animationTime);
+                } else {
+                    this.lightbox.show();
+                }
             } else {
-                this.lightbox.show();
+                if (this.config.animation == "fade") {
+                    this.lightboxWrapper.hide();
+                    this.lightbox.show();
+                    this.lightboxWrapper.fadeIn(this.config.animationTime);
+                } else {
+                    this.lightbox.show();
+                }
             }
         },
-
-        closeLightbox: function() {
+        /*
+        State == "close" or "change"
+         */
+        closeLightbox: function(state) {
             this.lightbox.removeClass(this.classes.states.active);
 
-            if (this.config.animation == "fade") {
-                this.lightbox.fadeOut(this.config.animationTime);
+            // If switching between lightbox, don't fadeout the background
+            if (state == "close") {
+                if (this.config.animation == "fade") {
+                    this.lightbox.fadeOut(this.config.animationTime);
+                } else {
+                    this.lightbox.hide();
+                }
             } else {
                 this.lightbox.hide();
             }
@@ -216,7 +241,7 @@
                     this.lightbox.find(focusableElements).first().focus();
                 }
             } else {
-                this.closeLightbox();
+                this.closeLightbox("close");
             }
         },
 
