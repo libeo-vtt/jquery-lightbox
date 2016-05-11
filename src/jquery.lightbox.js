@@ -78,7 +78,7 @@
             // Add the background shadow to the lightbox
             this.lightbox.append('<div class="lightbox-shadow ' + this.classes.states.active + '"></div>');
             // Add the close button
-            this.lightboxWrapper.append('<button class="' + this.classes.closeButton + '" data-close-lightbox="' + this.lightboxIdentifier + '">' + this.config.labels.closeButton + ' <span class="' + this.config.classes.states.hidden + '">' + this.config.labels.closeButtonHidden +'</span></button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.closeButton + '" data-close-lightbox="' + this.lightboxIdentifier + '">' + this.config.labels.closeButton + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.closeButtonHidden +'</span></button>');
             this.lightboxShadow = this.lightbox.find('.lightbox-shadow');
             this.bindEvents();
         },
@@ -104,8 +104,8 @@
 
         // Add previous and next buttons to the lightbox wrapper
         createNavigation: function() {
-            this.lightboxWrapper.append('<button class="' + this.classes.navigationPrev + '">' + this.config.labels.navigationPrev + ' <span class="' + this.config.classes.states.hidden + '">' + this.config.labels.navigationPrevHidden +'</span></button>');
-            this.lightboxWrapper.append('<button class="' + this.classes.navigationNext + '">' + this.config.labels.navigationNext + ' <span class="' + this.config.classes.states.hidden + '">' + this.config.labels.navigationNextHidden +'</span></button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.navigationPrev + '">' + this.config.labels.navigationPrev + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.navigationPrevHidden +'</span></button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.navigationNext + '">' + this.config.labels.navigationNext + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.navigationNextHidden +'</span></button>');
 
             // Get previous and next buttons
             this.navigationPrev = this.lightboxWrapper.find('.' + this.classes.navigationPrev);
