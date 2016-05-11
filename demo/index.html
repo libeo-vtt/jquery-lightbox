@@ -1,35 +1,53 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Lightbox demo</title>
-
-    <style>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Lightbox demo</title>
+        <style>
+        body{
+            position: relative;
+        }
         .lightbox {
             display: none;
             z-index: 9000;
             position: fixed;
+            font-size: 0;
             top: 0;
+            right: 0;
+            bottom: 0;
             left: 0;
+            box-sizing: border-box;
+            vertical-align: middle;
+            line-height: 0;
+            text-align: center;
             width: 100%;
             height: 100%;
+            padding: 60px 100px;
+        }
+        .lightbox:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
         }
         .lightbox-wrapper {
             z-index: 1;
             position: relative;
-            overflow: auto;
-            width: 70%;
-            max-height: 90vh;
-            padding: 30px;
-            border-bottom: 25px solid #fff;
-            border-radius: 25px;
+            padding: 10px;
+            display: inline-block;
+            font-size: 16px;
+            overflow: visible;
+            vertical-align: middle;
+            max-width: 100%;
+            max-height: 100%;
+            border: 3px solid #fff;
+            line-height: 0;
+            border-radius: 3px;
             background-color: #fff;
-            box-shadow: 0 0 51px -2px rgba(60,60,59,0.25);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+        }
+        .lightbox-wrapper p {
+            line-height: 1.25em;
         }
         .lightbox-shadow {
             position: absolute;
@@ -37,47 +55,65 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0,0,0,0.6);
+            background-color: rgba(5,30,47,0.9);
         }
-    </style>
-</head>
-<body>
-    <h1>Lightbox demo</h1>
-    <button data-open-lightbox="lightbox1">Ouvrir la lightbox</button>
-    <div data-lightbox-id="lightbox1" class="lightbox" data-gallery="gallery1">
-        <div class="lightbox-wrapper">
-            <p>Lightbox1</p>
-            <button data-close-lightbox="lightbox1">Fermer la lightbox</button>
+        .lightbox-close-button {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            padding: 15px;
+        }
+        .lightbox-prev-button {
+            left: -80px;
+            top: 50%;
+            transform: translateY(-50%);
+            position: absolute;
+            padding: 15px;
+        }
+        .lightbox-next-button {
+            position: absolute;
+            padding: 15px;
+            top: 50%;
+            right: -80px;
+            transform: translateY(-50%);
+        }
+        </style>
+    </head>
+    <body>
+        <h1>Lightbox demo</h1>
+        <button data-open-lightbox="lightbox1">Ouvrir la lightbox</button>
+        <div data-lightbox-id="lightbox1" class="lightbox" data-gallery="gallery1">
+            <div class="lightbox-wrapper">
+                <img src="http://i.imgur.com/VtjGyWl.png">
+            </div>
         </div>
-    </div>
-
-    <button data-open-lightbox="lightbox2">Ouvrir la lightbox</button>
-    <div data-lightbox-id="lightbox2" class="lightbox" data-gallery="gallery1">
-        <div class="lightbox-wrapper">
-            <p>Lightbox2</p>
-            <button data-close-lightbox="lightbox2">Fermer la lightbox</button>
+        <button data-open-lightbox="lightbox2">Ouvrir la lightbox</button>
+        <div data-lightbox-id="lightbox2" class="lightbox" data-gallery="gallery1">
+            <div class="lightbox-wrapper">
+                <p>bibendum ullamcorper. Suspendisse diam mauris, ornare id nunc vitae, molestie feugiat arcu. Etiam id arcu vulputate nisl viverra fringilla eu in nibh. Curabitur viverra neque iaculis enim dapibus blandit. Maecenas non pretium dolor. Nam cursus nulla eu urna tincidunt, sed euismod arcu dignissim.
+                    Nam lobortis magna magna, in ultricies urna viverra nec. Fusce nibh metus, ultrices eu luctus id, imperdiet quis felis. Donec viverra erat at turpis vehicula fermentum. Maecenas at lobortis lacus. Quisque purus neque, volutpat sit amet enim et, pharetra lacinia sapien. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Suspendisse lobortis odio in tellus finibus tincidunt. Nunc sed magna posuere, placerat urna sodales, tincidunt lacus. Integer laoreet iaculis ultricies. Aliquam lorem augue, hendrerit sit amet lacus vel, fringilla consectetur purus. Fusce non gravida nunc.
+                </p>
+            </div>
         </div>
-    </div>
-
-    <button data-open-lightbox="lightbox3">Ouvrir la lightbox</button>
-    <div data-lightbox-id="lightbox3" class="lightbox" data-gallery="gallery1">
-        <div class="lightbox-wrapper">
-            <p>Lightbox3</p>
-            <button data-close-lightbox="lightbox3">Fermer la lightbox</button>
+        <button data-open-lightbox="lightbox3">Ouvrir la lightbox</button>
+        <div data-lightbox-id="lightbox3" class="lightbox" data-gallery="gallery1">
+            <div class="lightbox-wrapper">
+                <p>Lightbox3</p>
+            </div>
         </div>
-    </div>
-
-    <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script type="text/javascript" src="../bower_components/vtt-jquery-focusable/dist/jquery.focusable.min.js"></script>
-    <script type="text/javascript" src="../dist/jquery.lightbox.js"></script>
-
-    <script>
+        <script type="text/javascript" src="../bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="../bower_components/vtt-jquery-focusable/dist/jquery.focusable.min.js"></script>
+        <script type="text/javascript" src="../dist/jquery.lightbox.js"></script>
+        <script>
         var lightbox = $('.lightbox').lightbox({
             keepFocusInside: true,
             createGallery: true,
-            loop: true
+            loop: true,
+            labels: {
+                navigationPrev: 'prev',
+                navigationNext: 'next',
+            },
         });
-    </script>
-</body>
+        </script>
+    </body>
 </html>
-
