@@ -24,9 +24,9 @@
             classes: {
                 prev: 'prev',
                 next: 'next',
-                navigationPrev: "lightbox-prev-button",
-                navigationNext: "lightbox-next-button",
-                closeButton: "lightbox-close-button",
+                navigationPrev: 'lightbox-prev-button',
+                navigationNext: 'lightbox-next-button',
+                closeButton: 'lightbox-close-button',
                 visuallyhidden: 'visuallyhidden',
                 states: {
                     active: 'is-active',
@@ -48,7 +48,7 @@
             open: $.proxy(function() {
                 this.openLightbox('change');
             }, this)
-        }
+        };
 
         this.lightboxWrapper = this.lightbox.find(".lightbox-wrapper");
         this.lightboxIdentifier = this.lightbox.attr('data-lightbox-id');
@@ -85,15 +85,18 @@
 
         bindEvents: function() {
             $(document).on('click', '[data-open-lightbox="' + this.lightboxIdentifier + '"]', $.proxy(function(e) {
-                this.openLightbox("new");
+                this.openLightbox('new');
+                e.preventDefault();
             }, this));
 
             $(document).on('click', '[data-close-lightbox="' + this.lightboxIdentifier + '"]', $.proxy(function(e) {
-                this.closeLightbox("close");
+                this.closeLightbox('close');
+                e.preventDefault();
             }, this));
 
             this.lightboxShadow.on('click', $.proxy(function(e) {
-                this.closeLightbox("close");
+                this.closeLightbox('close');
+                e.preventDefault();
             }, this));
 
             $(document).keyup($.proxy(function(e) {
@@ -125,7 +128,7 @@
 
         // Bind navigation events on previous and next buttons
         bindNavigation: function() {
-            this.navigationPrev.on('click', $.proxy(function(e) {
+            this.navigationPrev.on('click', $.proxy(function() {
                 var index;
                 if (this.config.loop === false) {
                     if (this.currentElementIndex == 0) {
@@ -146,7 +149,7 @@
                 }
             }, this));
 
-            this.navigationNext.on('click', $.proxy(function(e) {
+            this.navigationNext.on('click', $.proxy(function() {
                 var index;
                 if (this.config.loop === false) {
                     if (this.currentElementIndex == this.nbLightboxIndexes) {
@@ -171,7 +174,7 @@
         // Change of lightbox on navigation click
         changeLightbox: function(lightboxToOpen) {
             this.closeLightbox('change');
-            lightboxToOpenElement = lightboxToOpen.data('lightbox');
+            var lightboxToOpenElement = lightboxToOpen.data('lightbox');
             lightboxToOpenElement.publicMethods.open('change');
         },
 
