@@ -10,7 +10,7 @@
             keepFocusInside: true,
             createGallery: false,
             loop: false,
-            animation: "fade",
+            animation: 'fade',
             animationTime: 250,
             desactivateBodyScroll: true,
             labels: {
@@ -22,8 +22,11 @@
                 closeButtonHidden: 'Fermer la lightbox'
             },
             classes: {
-                prev: 'prev',
-                next: 'next',
+                wrapper: 'lightbox-wrapper',
+                shadow: 'lightbox-shadow',
+                guard: 'lightbox-guard',
+                guardPrev: 'lightbox-guard-prev',
+                guardNext: 'lightbox-guard-next',
                 navigationPrev: 'lightbox-prev-button',
                 navigationNext: 'lightbox-next-button',
                 closeButton: 'lightbox-close-button',
@@ -50,7 +53,7 @@
             }, this)
         };
 
-        this.lightboxWrapper = this.lightbox.find(".lightbox-wrapper");
+        this.lightboxWrapper = this.lightbox.find('.' + this.classes.wrapper);
         this.lightboxIdentifier = this.lightbox.attr('data-lightbox-id');
 
         this.lightboxOpenTriggers = $('button[data-open-lightbox="' + this.lightboxIdentifier + '"]');
@@ -76,10 +79,10 @@
         // Component initialization
         init: function() {
             // Add the background shadow to the lightbox
-            this.lightbox.append('<div class="lightbox-shadow ' + this.classes.states.active + '"></div>');
+            this.lightbox.append('<div class="' + this.classes.shadow + ' ' + this.classes.states.active + '"></div>');
             // Add the close button
-            this.lightboxWrapper.append('<button class="' + this.classes.closeButton + '" data-close-lightbox="' + this.lightboxIdentifier + '">' + this.config.labels.closeButton + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.closeButtonHidden +'</span></button>');
-            this.lightboxShadow = this.lightbox.find('.lightbox-shadow');
+            this.lightboxWrapper.append('<button class="' + this.classes.closeButton + '" data-close-lightbox="' + this.lightboxIdentifier + '">' + this.config.labels.closeButton + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.closeButtonHidden + '</span></button>');
+            this.lightboxShadow = this.lightbox.find('.' + this.classes.shadow);
             this.bindEvents();
         },
 
@@ -107,8 +110,8 @@
 
         // Add previous and next buttons to the lightbox wrapper
         createNavigation: function() {
-            this.lightboxWrapper.append('<button class="' + this.classes.navigationPrev + '">' + this.config.labels.navigationPrev + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.navigationPrevHidden +'</span></button>');
-            this.lightboxWrapper.append('<button class="' + this.classes.navigationNext + '">' + this.config.labels.navigationNext + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.navigationNextHidden +'</span></button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.navigationPrev + '">' + this.config.labels.navigationPrev + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.navigationPrevHidden + '</span></button>');
+            this.lightboxWrapper.append('<button class="' + this.classes.navigationNext + '">' + this.config.labels.navigationNext + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.navigationNextHidden + '</span></button>');
 
             // Get previous and next buttons
             this.navigationPrev = this.lightboxWrapper.find('.' + this.classes.navigationPrev);
@@ -209,8 +212,8 @@
             }
 
             // Desactivate body scroll if config is set to true
-            if(this.config.desactivateBodyScroll == true) {
-                $('body').css('overflow','hidden');
+            if (this.config.desactivateBodyScroll == true) {
+                $('body').css('overflow', 'hidden');
             }
         },
         /*
@@ -231,8 +234,8 @@
             }
 
             // Reactivate body scroll if config is set to true
-            if(this.config.desactivateBodyScroll == true) {
-                $('body').css('overflow','auto');
+            if (this.config.desactivateBodyScroll == true) {
+                $('body').css('overflow', 'auto');
             }
 
             this.removeGuards();
@@ -250,11 +253,10 @@
         },
 
         createGuards: function() {
-            this.lightbox.before('<button class="lightbox-guard ' + this.classes.visuallyhidden + ' ' + this.classes.prev + '"></button>');
-            this.lightbox.after('<button class="lightbox-guard ' + this.classes.visuallyhidden + ' ' + this.classes.next + '"></button>');
+            this.lightbox.before('<button class="' + this.classes.guard + ' ' + this.classes.visuallyhidden + ' ' + this.classes.guardPrev + '"></button>');
+            this.lightbox.after('<button class="' + this.classes.guard + ' ' + this.classes.visuallyhidden + ' ' + this.classes.guardNext + '"></button>');
 
-            this.lightboxGuards = this.lightbox.prev('.lightbox-guard').add(this.lightbox.next('.lightbox-guard'));
-
+            this.lightboxGuards = this.lightbox.prev('.' + this.classes.guard).add(this.lightbox.next('.' + this.classes.guard));
             this.lightboxGuards.on('focus', $.proxy(function(e) {
                 this.onGuardFocus(e);
             }, this));
@@ -265,7 +267,7 @@
             var focusableElements = 'a, button, :input, [tabindex]';
 
             if (this.config.keepFocusInside) {
-                if ($guard.hasClass(this.classes.prev)) {
+                if ($guard.hasClass(this.classes.guardPrev)) {
                     this.lightbox.find(focusableElements).last().focus();
                 } else {
                     this.lightbox.find(focusableElements).first().focus();
