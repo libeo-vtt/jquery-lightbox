@@ -83,6 +83,7 @@
             // Add the close button
             this.lightboxWrapper.append('<button class="' + this.classes.closeButton + '" data-close-lightbox="' + this.lightboxIdentifier + '">' + this.config.labels.closeButton + ' <span class="' + this.config.classes.visuallyhidden + '">' + this.config.labels.closeButtonHidden + '</span></button>');
             this.lightboxShadow = this.lightbox.find('.' + this.classes.shadow);
+            this.initVideos();
             this.bindEvents();
         },
 
@@ -106,24 +107,44 @@
                 if (e.keyCode === 27) this.closeLightbox('close');
             }, this));
 
+        },
+
+        initVideos: function(){
+
             // Get all YouTube videos iframes
             var youtubeVideos = this.lightbox.find('iframe[src*="youtube.com"]');
-            if(youtubeVideos.length > 0){
-
+            if (youtubeVideos.length > 0) {
                 this.youtubeVideos = youtubeVideos;
-
                 // For each YouTube video
-                youtubeVideos.each(function(){
+                youtubeVideos.each(function() {
                     var $this = $(this);
                     var src = $this.attr('src');
-
                     // Enabled JS API if not enabled
-                    if(src.indexOf('enablejsapi=1') === -1){
-                        if(src.indexOf('?') === -1){
+                    if (src.indexOf('enablejsapi=1') === -1) {
+                        if (src.indexOf('?') === -1) {
                             src = src + '?enablejsapi=1'
-                        }
-                        else{
+                        } else {
                             src = src + '&enablejsapi=1'
+                        }
+                        $this.attr('src', src);
+                    }
+                });
+            }
+
+            // Get all Vimeo videos iframes
+            var vimeoVideos = this.lightbox.find('iframe[src*="vimeo.com"]');
+            if (vimeoVideos.length > 0) {
+                this.vimeoVideos = vimeoVideos;
+                // For each YouTube video
+                vimeoVideos.each(function() {
+                    var $this = $(this);
+                    var src = $this.attr('src');
+                    // Enabled JS API if not enabled
+                    if (src.indexOf('api=1') === -1) {
+                        if (src.indexOf('?') === -1) {
+                            src = src + '?api=1'
+                        } else {
+                            src = src + '&api=1'
                         }
                         $this.attr('src', src);
                     }
@@ -263,11 +284,18 @@
             }
 
             // If there is youtubeVideos present in lightbox
-            if(typeof this.youtubeVideos != 'undefined' && this.youtubeVideos.length > 0){
-
+            if (typeof this.youtubeVideos !== 'undefined' && this.youtubeVideos.length > 0) {
                 // Pause each video using JS API
-                this.youtubeVideos.each(function(){
+                this.youtubeVideos.each(function() {
                     this.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                });
+            }
+
+            // If there is vimeoVideos present in lightbox
+            if( typeof this.vimeoVideos !== 'undefined' && this.vimeoVideos.length > 0) {
+                // Pause each video using JS API
+                this.vimeoVideos.each(function() {
+                    this.contentWindow.postMessage('{"method":"pause"}', '*');
                 });
             }
 
