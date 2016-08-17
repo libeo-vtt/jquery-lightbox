@@ -106,6 +106,30 @@
                 if (e.keyCode === 27) this.closeLightbox('close');
             }, this));
 
+            // Get all YouTube videos iframes
+            var youtubeVideos = this.lightbox.find('iframe[src*="youtube.com"]');
+            if(youtubeVideos.length > 0){
+
+                this.youtubeVideos = youtubeVideos;
+
+                // For each YouTube video
+                youtubeVideos.each(function(){
+                    var $this = $(this);
+                    var src = $this.attr('src');
+
+                    // Enabled JS API if not enabled
+                    if(src.indexOf('enablejsapi=1') === -1){
+                        if(src.indexOf('?') === -1){
+                            src = src + '?enablejsapi=1'
+                        }
+                        else{
+                            src = src + '&enablejsapi=1'
+                        }
+                        $this.attr('src', src);
+                    }
+                });
+            }
+
         },
 
         // Add previous and next buttons to the lightbox wrapper
@@ -236,6 +260,15 @@
             // Reactivate body scroll if config is set to true
             if (this.config.desactivateBodyScroll == true) {
                 $('body').css('overflow', 'auto');
+            }
+
+            // If there is youtubeVideos present in lightbox
+            if(typeof this.youtubeVideos != 'undefined' && this.youtubeVideos.length > 0){
+
+                // Pause each video using JS API
+                this.youtubeVideos.each(function(){
+                    this.contentWindow.postMessage('{"event":"command","func":"pauseVideo","args":""}', '*');
+                });
             }
 
             this.removeGuards();
