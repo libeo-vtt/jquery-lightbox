@@ -12,6 +12,7 @@
             loop: false,
             isJsAnimation: true,
             elementToFocus: null,
+            delayToFocus: 0,
             animation: 'fade',
             animationTime: 250,
             desactivateBodyScroll: true,
@@ -245,7 +246,7 @@
             if(this.config.elementToFocus != null) {
                 setTimeout($.proxy(function() {
                      this.lightbox.find(this.config.elementToFocus).focus();
-                }, this), 100);
+                }, this), this.config.delayToFocus);
             }
 
             this.resizeContainer();
