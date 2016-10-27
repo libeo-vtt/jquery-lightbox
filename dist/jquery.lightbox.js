@@ -11,6 +11,7 @@
             createGallery: false,
             loop: false,
             isJsAnimation: true,
+            elementToFocus: null,
             animation: 'fade',
             animationTime: 250,
             desactivateBodyScroll: true,
@@ -236,6 +237,13 @@
             setTimeout($.proxy(function() {
                 this.lightbox.focus();
             }, this), 0);
+
+            // If element to focus is specified
+            if(this.config.elementToFocus != null) {
+                setTimeout($.proxy(function() {
+                     this.lightbox.find(this.config.elementToFocus).focus();
+                }, this), 100);
+            }
 
             this.lightbox.addClass(this.classes.states.active);
             this.resizeContainer();

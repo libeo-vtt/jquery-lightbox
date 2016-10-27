@@ -65,6 +65,24 @@ Keep focus inside the lightbox (can't focus behind it)
 
 ---
 
+#### `elementToFocus`
+
+> **Type:** String<br>
+**Default value:** null
+
+Element to focus on lightbox open
+
+---
+
+#### `isJsAnimation`
+
+> **Type:** Boolean<br>
+**Default value:** true
+
+If js animation is activated
+
+---
+
 #### `createGallery`
 
 > **Type:** Boolean<br>
