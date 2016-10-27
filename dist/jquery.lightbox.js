@@ -10,6 +10,7 @@
             keepFocusInside: true,
             createGallery: false,
             loop: false,
+            isJsAnimation: true,
             animation: 'fade',
             animationTime: 250,
             desactivateBodyScroll: true,
@@ -109,7 +110,7 @@
 
         },
 
-        initVideos: function(){
+        initVideos: function() {
 
             // Get all YouTube videos iframes
             var youtubeVideos = this.lightbox.find('iframe[src*="youtube.com"]');
@@ -239,20 +240,23 @@
             this.lightbox.addClass(this.classes.states.active);
             this.resizeContainer();
 
-            // If switching between lightbox, don't fadeIn the background
-            if (state == 'new') {
-                if (this.config.animation == 'fade') {
-                    this.lightbox.fadeIn(this.config.animationTime);
+            // If js animation or only css
+            if (this.config.isJsAnimation === true) {
+                // If switching between lightbox, don't fadeIn the background
+                if (state == 'new') {
+                    if (this.config.animation == 'fade') {
+                        this.lightbox.fadeIn(this.config.animationTime);
+                    } else {
+                        this.lightbox.show();
+                    }
                 } else {
-                    this.lightbox.show();
-                }
-            } else {
-                if (this.config.animation == 'fade') {
-                    this.lightboxWrapper.hide();
-                    this.lightbox.show();
-                    this.lightboxWrapper.fadeIn(this.config.animationTime);
-                } else {
-                    this.lightbox.show();
+                    if (this.config.animation == 'fade') {
+                        this.lightboxWrapper.hide();
+                        this.lightbox.show();
+                        this.lightboxWrapper.fadeIn(this.config.animationTime);
+                    } else {
+                        this.lightbox.show();
+                    }
                 }
             }
 
@@ -267,15 +271,18 @@
         closeLightbox: function(state) {
             this.lightbox.removeClass(this.classes.states.active);
 
-            // If switching between lightbox, don't fadeout the background
-            if (state == 'close') {
-                if (this.config.animation == 'fade') {
-                    this.lightbox.fadeOut(this.config.animationTime);
+            // If js animation or only css
+            if (this.config.isJsAnimation === true) {
+                // If switching between lightbox, don't fadeout the background
+                if (state == 'close') {
+                    if (this.config.animation == 'fade') {
+                        this.lightbox.fadeOut(this.config.animationTime);
+                    } else {
+                        this.lightbox.hide();
+                    }
                 } else {
                     this.lightbox.hide();
                 }
-            } else {
-                this.lightbox.hide();
             }
 
             // Reactivate body scroll if config is set to true
@@ -292,7 +299,7 @@
             }
 
             // If there is vimeoVideos present in lightbox
-            if( typeof this.vimeoVideos !== 'undefined' && this.vimeoVideos.length > 0) {
+            if (typeof this.vimeoVideos !== 'undefined' && this.vimeoVideos.length > 0) {
                 // Pause each video using JS API
                 this.vimeoVideos.each(function() {
                     this.contentWindow.postMessage('{"method":"pause"}', '*');
