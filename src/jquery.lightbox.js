@@ -233,6 +233,9 @@
          */
         openLightbox: function(state) {
             this.createGuards();
+
+            this.lightbox.addClass(this.classes.states.active);
+
             this.lightbox.attr('tabindex', -1);
             setTimeout($.proxy(function() {
                 this.lightbox.focus();
@@ -245,7 +248,6 @@
                 }, this), 100);
             }
 
-            this.lightbox.addClass(this.classes.states.active);
             this.resizeContainer();
 
             // If js animation or only css
