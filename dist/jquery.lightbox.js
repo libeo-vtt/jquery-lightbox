@@ -16,6 +16,8 @@
             animation: 'fade',
             animationTime: 250,
             desactivateBodyScroll: true,
+            onOpenLightbox: $.noop,
+            onCloseLightbox: $.noop,
             labels: {
                 navigationPrev: 'Précédent',
                 navigationPrevHidden: 'Précédent',
@@ -234,8 +236,10 @@
          */
         openLightbox: function(state) {
             this.createGuards();
-
             this.lightbox.addClass(this.classes.states.active);
+
+            // Public callback
+            this.config.onOpenLightbox();
 
             this.lightbox.attr('tabindex', -1);
             setTimeout($.proxy(function() {
@@ -281,6 +285,9 @@
          */
         closeLightbox: function(state) {
             this.lightbox.removeClass(this.classes.states.active);
+
+            // Public callback
+            this.config.onCloseLightbox();
 
             // If js animation or only css
             if (this.config.isJsAnimation === true) {
