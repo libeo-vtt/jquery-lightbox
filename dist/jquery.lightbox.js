@@ -90,6 +90,9 @@
             this.lightboxShadow = this.lightbox.find('.' + this.classes.shadow);
             this.initVideos();
             this.bindEvents();
+            if(this.lightbox.hasClass(this.classes.states.active)){
+                this.openLightbox('new');
+            }
         },
 
         bindEvents: function() {
