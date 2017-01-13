@@ -90,7 +90,7 @@
             this.lightboxShadow = this.lightbox.find('.' + this.classes.shadow);
             this.initVideos();
             this.bindEvents();
-            if(this.lightbox.hasClass(this.classes.states.active)){
+            if (this.lightbox.hasClass(this.classes.states.active)) {
                 this.openLightbox('new');
             }
         },
@@ -241,18 +241,15 @@
             this.createGuards();
             this.lightbox.addClass(this.classes.states.active);
 
-            // Public callback
-            this.config.onOpenLightbox();
-
             this.lightbox.attr('tabindex', -1);
             setTimeout($.proxy(function() {
                 this.lightbox.focus();
             }, this), 0);
 
             // If element to focus is specified
-            if(this.config.elementToFocus != null) {
+            if (this.config.elementToFocus != null) {
                 setTimeout($.proxy(function() {
-                     this.lightbox.find(this.config.elementToFocus).focus();
+                    this.lightbox.find(this.config.elementToFocus).focus();
                 }, this), this.config.delayToFocus);
             }
 
@@ -278,6 +275,9 @@
                 }
             }
 
+            // Public callback
+            this.config.onOpenLightbox();
+
             // Desactivate body scroll if config is set to true
             if (this.config.desactivateBodyScroll == true) {
                 $('body').css('overflow', 'hidden');
@@ -288,9 +288,6 @@
          */
         closeLightbox: function(state) {
             this.lightbox.removeClass(this.classes.states.active);
-
-            // Public callback
-            this.config.onCloseLightbox();
 
             // If js animation or only css
             if (this.config.isJsAnimation === true) {
@@ -305,6 +302,9 @@
                     this.lightbox.hide();
                 }
             }
+
+            // Public callback
+            this.config.onCloseLightbox();
 
             // Reactivate body scroll if config is set to true
             if (this.config.desactivateBodyScroll == true) {
