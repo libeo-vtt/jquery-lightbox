@@ -63,19 +63,6 @@
 
         this.lightboxOpenTriggers = $('button[data-open-lightbox="' + this.lightboxIdentifier + '"]');
 
-        // Create a gallery of lightbox if config set to true
-        if (this.config.createGallery == true) {
-            this.galleryIdentifier = this.lightbox.attr('data-gallery');
-            this.galleryElements = $('[data-gallery="' + this.galleryIdentifier + '"]');
-            // If there's actually more than one lightbox with the data-gallery
-            if (this.galleryElements.length > 1) {
-                this.currentElementIndex = this.galleryElements.index(this.lightbox);
-                this.currentLightbox = this.galleryElements.eq(this.currentElementIndex);
-                this.nbLightboxIndexes = this.galleryElements.length - 1;
-                this.createNavigation();
-            }
-        }
-
         this.init();
     };
 
@@ -83,6 +70,20 @@
 
         // Component initialization
         init: function() {
+            // Check for aria and labels on the HTML element - overwrite JS config
+            this.updatePluginText();
+            // Create a gallery of lightbox if config set to true
+            if (this.config.createGallery == true) {
+                this.galleryIdentifier = this.lightbox.attr('data-gallery');
+                this.galleryElements = $('[data-gallery="' + this.galleryIdentifier + '"]');
+                // If there's actually more than one lightbox with the data-gallery
+                if (this.galleryElements.length > 1) {
+                    this.currentElementIndex = this.galleryElements.index(this.lightbox);
+                    this.currentLightbox = this.galleryElements.eq(this.currentElementIndex);
+                    this.nbLightboxIndexes = this.galleryElements.length - 1;
+                    this.createNavigation();
+                }
+            }
             // Add the background shadow to the lightbox
             this.lightbox.append('<div class="' + this.classes.shadow + ' ' + this.classes.states.active + '"></div>');
             // Add the close button
@@ -117,8 +118,23 @@
 
         },
 
-        initVideos: function() {
+        updatePluginText: function() {
+            // Loop through labels in config
+            $.each(this.config.labels, $.proxy(function(labelKey, labelText) {
+                // Loop through labels in element data attributes to see if it's set
+                $.each(this.lightbox.data(), $.proxy(function(dataLabelKey, dataLabelText) {
+                    var dataLabelKeyCamelCased = dataLabelKey.replace(/-([a-z])/g, function(g) {
+                        return g[1].toUpperCase();
+                    });
+                    // We have a match!
+                    if (dataLabelKeyCamelCased === labelKey) {
+                        this.config.labels[dataLabelKeyCamelCased] = dataLabelText;
+                    }
+                }, this));
+            }, this));
+        },
 
+        initVideos: function() {
             // Get all YouTube videos iframes
             var youtubeVideos = this.lightbox.find('iframe[src*="youtube.com"]');
             if (youtubeVideos.length > 0) {
