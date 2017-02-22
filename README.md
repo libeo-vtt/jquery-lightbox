@@ -7,7 +7,6 @@ Accessible, responsive and configurable jQuery lightbox plugin
 
 	```html
 	<script src="path/to/jquery.min.js"></script>
-	<script src="path/to/jquery.focusable.min.js"></script>
 	```
 
 2. Include plugin's code:
