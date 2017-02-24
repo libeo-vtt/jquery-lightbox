@@ -369,7 +369,7 @@
 
         onGuardFocus: function(e) {
             var $guard = $(e.currentTarget);
-            var focusableElements = 'a, button, :input, [tabindex]';
+            var focusableElements = 'a, button, :input, [tabindex=-1]';
 
             if (this.config.keepFocusInside) {
                 if ($guard.hasClass(this.classes.guardPrev)) {
